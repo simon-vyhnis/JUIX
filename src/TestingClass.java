@@ -1,3 +1,6 @@
+import components.Part;
+import core.JUIXApplication;
+
 public class TestingClass {
 
     public static void main(String[] args){

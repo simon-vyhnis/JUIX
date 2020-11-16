@@ -1,3 +1,5 @@
+package components;
+
 public abstract class View {
     private Bounds bounds;
     /*

@@ -1,3 +1,7 @@
+package core;
+
+import components.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -8,8 +12,10 @@ public class JUIXApplication {
     private Bounds bounds;
     private Part currentPart;
 
+    private int ticksPerSecond;
+
     /*
-     * If you do not need anything else to to define than name and start Part than use this constructor.
+     * If you do not need anything else to to define than name and start components.Part than use this constructor.
      */
     public JUIXApplication(String name, Part startPart){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -20,7 +26,7 @@ public class JUIXApplication {
         canvas = new Canvas();
     }
 
-    public void draw(){
+    void draw(){
         BufferStrategy strategy = canvas.getBufferStrategy();
         if(strategy==null){
             canvas.createBufferStrategy(2);
@@ -31,6 +37,10 @@ public class JUIXApplication {
         currentPart.draw(g);
         g.dispose();
         strategy.show();
+    }
+
+    void update(int tick){
+
     }
 
     /*
@@ -51,5 +61,12 @@ public class JUIXApplication {
      */
     public JFrame getFrame(){
         return frame;
+    }
+
+    /*
+     * Returns tick per second, what is the app currently running.
+     */
+    public int getTicksPerSecond() {
+        return ticksPerSecond;
     }
 }
