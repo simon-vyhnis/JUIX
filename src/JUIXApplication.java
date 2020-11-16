@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 
 public class JUIXApplication {
     private JFrame frame;
+    private Canvas canvas;
     private Bounds bounds;
     private Part currentPart;
 
@@ -15,6 +17,20 @@ public class JUIXApplication {
         frame.setTitle(name);
         frame.setBounds(0, 0, screenSize.width, screenSize.height);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        canvas = new Canvas();
+    }
+
+    public void draw(){
+        BufferStrategy strategy = canvas.getBufferStrategy();
+        if(strategy==null){
+            canvas.createBufferStrategy(2);
+            return;
+        }
+        Graphics g = strategy.getDrawGraphics();
+        canvas.paint(g);
+        currentPart.draw(g);
+        g.dispose();
+        strategy.show();
     }
 
     /*
