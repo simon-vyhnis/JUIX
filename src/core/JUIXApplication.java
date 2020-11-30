@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 public class JUIXApplication {
     private JFrame frame;
     private Canvas canvas;
+
     private Bounds bounds;
     private Part currentPart;
 
@@ -24,6 +25,10 @@ public class JUIXApplication {
         frame.setBounds(0, 0, screenSize.width, screenSize.height);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         canvas = new Canvas();
+        frame.add(canvas);
+        frame.setVisible(true);
+        Cycle cycle = new Cycle(this);
+        cycle.start();
     }
 
     void draw(){
@@ -40,7 +45,7 @@ public class JUIXApplication {
     }
 
     void update(int tick){
-
+        currentPart.update(tick);
     }
 
     /*
@@ -49,10 +54,6 @@ public class JUIXApplication {
      */
     public JUIXApplication(JUIXFile configFile){
         //TODO: create this
-    }
-
-    public void start(){
-        frame.setVisible(true);
     }
 
     /*

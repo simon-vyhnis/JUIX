@@ -8,4 +8,8 @@ public abstract class Part {
 
     }
 
+    public void update(int tick){
+
+    }
+
 }
