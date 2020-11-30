@@ -7,6 +7,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import views.ButtonView;
 import views.TextView;
 
 import java.io.File;
@@ -27,10 +28,10 @@ public class LayoutParser {
             for (Element child:root.getChildren()) {
                 switch (child.getName()){
                     case "Text":
-                        result.add(new TextView(new Bounds(10,10,10,10),child.getAttributes()));
+                        result.add(new TextView(child));
                         break;
                     case "Button":
-                        result.add(new TextView(new Bounds(10,20,30,40),child.getAttributes()));
+                        result.add(new ButtonView(child));
                         break;
                     default:
                         try {

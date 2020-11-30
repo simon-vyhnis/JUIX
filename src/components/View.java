@@ -1,15 +1,13 @@
 package components;
 
 import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 import java.awt.*;
 import java.util.List;
 
-public abstract class View {
-    private Bounds bounds;
-    public View(Bounds bounds, List<Attribute> params){
-        this.bounds = bounds;
-    }
+public abstract class View{
+    public View(Element xml){}
     /*
      * This method is called every time, when the canvas is redrawn
      */
@@ -21,11 +19,5 @@ public abstract class View {
 
     }
 
-    public Bounds getBounds() {
-        return bounds;
-    }
 
-    public void setBounds(Bounds bounds) {
-        this.bounds = bounds;
-    }
 }

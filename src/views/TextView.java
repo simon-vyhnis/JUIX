@@ -3,20 +3,26 @@ package views;
 import components.Bounds;
 import components.View;
 import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 import java.awt.*;
 import java.util.List;
 
 public class TextView extends View {
     private String text;
-    public TextView(Bounds bounds, List<Attribute> params) {
-        super(bounds, params);
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+
+    public TextView(Element xml) {
+        super(xml);
     }
 
     @Override
     public void draw(Graphics g) {
         if (text!=null)
-            g.drawString(text,getBounds().getX(),getBounds().getY());
+            g.drawString(text,x,y);
     }
 
     @Override

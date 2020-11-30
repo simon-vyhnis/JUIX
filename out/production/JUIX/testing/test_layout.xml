@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <PixelLayout>
-    <Text>Text</Text>
+    <Text
+        id="text1"
+        x="500"
+        y="400"
+        text="Title"
+    />
     <Button>Click!</Button>
 </PixelLayout>
