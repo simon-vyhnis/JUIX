@@ -3,6 +3,7 @@ package testing;
 import components.Part;
 import core.JUIXApplication;
 import core.LayoutParser;
+import exceptions.MissingAttributeException;
 
 import java.io.File;
 
@@ -13,7 +14,11 @@ public class TestingClass {
         LayoutParser parser = new LayoutParser();
         File file = new File("C:\\Users\\simon\\IdeaProjects\\JUIX\\src\\testing/test_layout.xml");
         if(file.exists()) {
-            parser.parse(file);
+            try {
+                parser.parse(file);
+            } catch (MissingAttributeException e) {
+                e.printStackTrace();
+            }
         }else
             System.out.println("MANUAL_TESTING: "+" File not found");
     }
