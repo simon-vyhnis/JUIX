@@ -1,5 +1,6 @@
 package core;
 
+import com.sun.istack.internal.NotNull;
 import components.*;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class JUIXApplication {
     /*
      * If you do not need anything else to to define than name and start components.Part than use this constructor.
      */
-    public JUIXApplication(String name, Part startPart){
+    public JUIXApplication(@NotNull String name, @NotNull Part startPart){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame = new JFrame();
         frame.setTitle(name);
@@ -28,6 +29,7 @@ public class JUIXApplication {
         frame.add(canvas);
         frame.setVisible(true);
         Cycle cycle = new Cycle(this);
+        currentPart = startPart;
         cycle.start();
     }
 
@@ -69,5 +71,10 @@ public class JUIXApplication {
      */
     public int getTicksPerSecond() {
         return ticksPerSecond;
+    }
+
+    public void switchPart(){
+
+
     }
 }

@@ -9,9 +9,9 @@ import java.awt.*;
 import java.util.List;
 
 public class TextView extends View {
-    private String text;
-    private int x;
-    private int y;
+    private String text = "TextView";
+    private int x=10;
+    private int y=10;
     private int width;
     private int height;
 
