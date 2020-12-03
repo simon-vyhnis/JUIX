@@ -29,17 +29,17 @@ public class LayoutParser {
             xmlFile = builder.build(layoutFile);
             Element root = xmlFile.getRootElement();
             Class<?> clazz = Class.forName(root.getName());
-            Constructor<?> constructor = clazz.getConstructor(Element.class, LayoutParser.class);
-            return (Layout)constructor.newInstance(root, this);
+            Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class, LayoutParser.class);
+            return (Layout)constructor.newInstance(root, null, this);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
             throw new InvalidViewReferenceException(layoutFile.getAbsolutePath(),"Root Layout");
         }
     }
-    public Map<String,View> parseLayout(Element root) throws MissingAttributeException, InvalidViewReferenceException {
+    public Map<String,View> parseLayout(Element root, Layout layout) throws MissingAttributeException, InvalidViewReferenceException {
         ViewMap<String, View> result = new ViewMap<>();
         for (Element child:root.getChildren()) {
-            result.put(parseView(child));
+            result.put(parseView(child, layout));
         }
         System.out.println("PARSING_LAYOUT: "+root.getName());
         return  result;
@@ -50,24 +50,23 @@ public class LayoutParser {
             throw new MissingAttributeException(file.getAbsolutePath(), xml.getName(), attributeName);
         }
     }
-    private Map.Entry<String, View> parseView(Element child) throws MissingAttributeException, InvalidViewReferenceException {
+    private Map.Entry<String, View> parseView(Element child, Layout layout) throws MissingAttributeException, InvalidViewReferenceException {
         Map.Entry<String, View> result;
         checkAttribute("id", child, layoutFile);
         checkAttribute("height", child, layoutFile);
         checkAttribute("width", child, layoutFile);
         switch (child.getName()){
             case "Text":
-                result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"),new TextView(child));
+                result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"),new TextView(child, layout));
                 break;
             case "Button":
-                result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"), new ButtonView(child));
+                result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"), new ButtonView(child, layout));
                 break;
             default:
                 try {
                     Class<?> clazz = Class.forName(child.getName());
-                    Constructor<?> constructor = clazz.getConstructor(Element.class);
-                    View view = (View)constructor.newInstance(child
-                    );
+                    Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class);
+                    View view = (View)constructor.newInstance(child, layout);
                     result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"),view);
 
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {

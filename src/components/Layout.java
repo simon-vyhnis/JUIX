@@ -14,10 +14,10 @@ import java.util.Map;
 public abstract class Layout extends View{
     Map<String,View> views;
 
-    public Layout(Element xml, LayoutParser parser) {
-        super(xml);
+    public Layout(Element xml, Layout layout, LayoutParser parser) {
+        super(xml,layout);
         try {
-            views = parser.parseLayout(xml);
+            views = parser.parseLayout(xml,this);
         } catch (MissingAttributeException | InvalidViewReferenceException e) {
             e.printStackTrace();
         }
@@ -27,5 +27,17 @@ public abstract class Layout extends View{
     @Override
     public void draw(Graphics g) {
         views.forEach((k,v)->v.draw(g));
+    }
+
+    public Map<String, View> getViews(){
+        return views;
+    }
+
+    public View getView(String id){
+        return views.get(id);
+    }
+
+    public void notifyViewsChanged(){
+
     }
 }

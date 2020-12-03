@@ -1,6 +1,7 @@
 package views;
 
 import components.Bounds;
+import components.Layout;
 import components.View;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
@@ -10,13 +11,13 @@ import java.util.List;
 
 public class TextView extends View {
     private String text = "TextView";
-    private int x=10;
-    private int y=10;
+    private int x=-1;
+    private int y=-1;
     private int width;
     private int height;
 
-    public TextView(Element xml) {
-        super(xml);
+    public TextView(Element xml, Layout layout) {
+        super(xml, layout);
     }
 
     @Override
@@ -28,6 +29,16 @@ public class TextView extends View {
     @Override
     public void update() {
         super.update();
+    }
+
+    @Override
+    public int getContentWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getContentHeight() {
+        return 0;
     }
 
     public String getText() {

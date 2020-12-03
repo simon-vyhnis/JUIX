@@ -11,5 +11,9 @@
             id="button1"
             width="20dp"
             height="30px"/>
-
+    
+    <layouts.PixelLayout
+            id="button1"
+            width="20dp"
+            height="30px"/>
 </layouts.PixelLayout>
