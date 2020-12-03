@@ -65,8 +65,14 @@ public class LayoutParser {
             default:
                 try {
                     Class<?> clazz = Class.forName(child.getName());
-                    Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class);
-                    View view = (View)constructor.newInstance(child, layout);
+                    View view;
+                    if(clazz.getDeclaredConstructors()[0].getParameterCount()==2) {
+                        Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class);
+                        view = (View) constructor.newInstance(child, layout);
+                    }else{
+                        Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class, LayoutParser.class);
+                        view = (Layout) constructor.newInstance(child, layout, this);
+                    }
                     result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"),view);
 
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
