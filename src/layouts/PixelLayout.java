@@ -3,6 +3,7 @@ package layouts;
 import components.Bounds;
 import components.Layout;
 import core.LayoutParser;
+import exceptions.InvalidDimensionException;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
@@ -14,10 +15,14 @@ public class PixelLayout extends Layout {
     }
     private void parseDimensions(){
         getViews().forEach((k,v)->{
-            parseWholeDimension(v.getRawHeight());
+            try {
+                parseWholeDimension(v.getRawHeight());
+            } catch (InvalidDimensionException e) {
+                e.printStackTrace();
+            }
         });
     }
-    private void parseWholeDimension(String rawDimension){
+    private void parseWholeDimension(String rawDimension) throws InvalidDimensionException {
         if(rawDimension.contains("+")){
             String[] singleDimensions  = rawDimension.split("\\+");
             parseSingleDimension(singleDimensions[0]);
@@ -26,8 +31,18 @@ public class PixelLayout extends Layout {
             parseSingleDimension(rawDimension);
         }
     }
-    private void parseSingleDimension(String singleRawDimension){
+    private void parseSingleDimension(String singleRawDimension) throws InvalidDimensionException {
+        if(singleRawDimension.contains("id:")){
 
+        }else if(singleRawDimension.contains("px")){
+
+        }else if(singleRawDimension.contains("dp")){
+
+        }else if(singleRawDimension.contains("%")){
+
+        }else{
+            throw new InvalidDimensionException("Invalid dimension: "+singleRawDimension);
+        }
     }
 
     @Override
