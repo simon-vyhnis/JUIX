@@ -1,5 +1,9 @@
 package core;
 
+import components.UpdateReceiver;
+
+import java.util.List;
+
 public class Cycle{
     private boolean isRunning;
     private JUIXApplication application;

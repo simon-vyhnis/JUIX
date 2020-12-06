@@ -6,6 +6,7 @@ import components.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.List;
 
 public class JUIXApplication {
     private JFrame frame;
@@ -15,6 +16,8 @@ public class JUIXApplication {
     private Part currentPart;
 
     private int ticksPerSecond;
+
+    private List<UpdateReceiver> receivers;
 
     /*
      * If you do not need anything else to to define than name and start components.Part than use this constructor.
@@ -48,6 +51,13 @@ public class JUIXApplication {
 
     void update(int tick){
         currentPart.update(tick);
+        for(UpdateReceiver receiver:receivers){
+            if(receiver==null){
+                receivers.remove(receiver);
+            }else{
+                receiver.onReceive();
+            }
+        }
     }
 
     /*
@@ -77,4 +87,9 @@ public class JUIXApplication {
 
 
     }
+
+    public void registerUpdateReceiver(UpdateReceiver receiver){
+        receivers.add(receiver);
+    }
+
 }
