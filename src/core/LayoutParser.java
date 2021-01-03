@@ -22,6 +22,9 @@ public class LayoutParser {
     public LayoutParser(File layoutFile){
         this.layoutFile = layoutFile;
     }
+    /**
+     * Method for parsing the root layout
+     */
     public Layout parseFile() throws InvalidViewReferenceException, JDOMException, IOException {
         SAXBuilder builder = new SAXBuilder();
         Document xmlFile;
@@ -36,6 +39,17 @@ public class LayoutParser {
             throw new InvalidViewReferenceException(layoutFile.getAbsolutePath(),"Root Layout");
         }
     }
+
+    /**
+     *
+     * @param root
+     * @param layout
+     * @return list of views in layout
+     * @throws MissingAttributeException
+     * @throws InvalidViewReferenceException
+     *
+     * Used to parse layouts in layout
+     */
     public Map<String,View> parseLayout(Element root, Layout layout) throws MissingAttributeException, InvalidViewReferenceException {
         ViewMap<String, View> result = new ViewMap<>();
         for (Element child:root.getChildren()) {
@@ -45,11 +59,32 @@ public class LayoutParser {
         return  result;
     }
 
+    /**
+     *
+     * @param attributeName
+     * @param xml
+     * @param file
+     * @throws MissingAttributeException
+     *
+     * Method for checking if view has all needed attributes
+     */
     private void checkAttribute(String attributeName, Element xml, File file) throws MissingAttributeException {
         if(xml.getAttribute(attributeName)==null){
             throw new MissingAttributeException(file.getAbsolutePath(), xml.getName(), attributeName);
         }
     }
+
+    /**
+     *
+     * @param child
+     * @param layout
+     * @return view with id as key
+     * @throws MissingAttributeException
+     * @throws InvalidViewReferenceException
+     *
+     * Creates view from XML file
+     */
+
     private Map.Entry<String, View> parseView(Element child, Layout layout) throws MissingAttributeException, InvalidViewReferenceException {
         Map.Entry<String, View> result;
         checkAttribute("id", child, layoutFile);
@@ -82,6 +117,7 @@ public class LayoutParser {
                 break;
         }
         return result;
+
     }
     /**
      *  Customized HashMap for storing views

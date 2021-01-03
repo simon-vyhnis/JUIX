@@ -11,13 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Layout extends View{
-    Map<String,View> views;
+public abstract class Layout extends View {
+    Map<String, View> views;
+
 
     public Layout(Element xml, Layout layout, LayoutParser parser) {
-        super(xml,layout);
+        super(xml, layout);
         try {
-            views = parser.parseLayout(xml,this);
+            views = parser.parseLayout(xml, this);
         } catch (MissingAttributeException | InvalidViewReferenceException e) {
             e.printStackTrace();
         }
@@ -26,18 +27,16 @@ public abstract class Layout extends View{
 
     @Override
     public void draw(Graphics g) {
-        views.forEach((k,v)->v.draw(g));
+        views.forEach((k, v) -> v.draw(g));
     }
 
-    public Map<String, View> getViews(){
+    public Map<String, View> getViews() {
         return views;
     }
 
-    public View getView(String id){
+    public View getView(String id) {
         return views.get(id);
     }
 
-    public void notifyViewsChanged(){
-
-    }
+    public abstract void notifyViewsChanged();
 }

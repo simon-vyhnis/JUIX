@@ -13,10 +13,10 @@ public abstract class View{
     private String rawHeight;
     private String rawX;
     private String rawY;
-    private int width;
-    private int height;
-    private int x;
-    private int y;
+    private int width = -1;
+    private int height = -1;
+    private int x = -1;
+    private int y = -1;
 
     private Layout layout;
 
@@ -78,5 +78,21 @@ public abstract class View{
     public void setY(String rawY) {
         this.rawY = rawY;
         layout.notifyViewsChanged();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
