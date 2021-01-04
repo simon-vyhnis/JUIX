@@ -1,5 +1,6 @@
 package components;
 
+import core.JUIXApplication;
 import core.LayoutParser;
 import exceptions.InvalidViewReferenceException;
 import org.jdom2.JDOMException;
@@ -10,8 +11,16 @@ import java.io.IOException;
 
 public abstract class Part {
     private Layout layout;
+    private JUIXApplication application;
 
-    public Part(File layoutFile) {
+    public Part(JUIXApplication application) {
+       this.application = application;
+       onCreate();
+    }
+
+    protected abstract void onCreate();
+
+    protected void setLayout(File layoutFile){
         LayoutParser parser = new LayoutParser(layoutFile);
         try {
             layout = parser.parseFile();
@@ -27,6 +36,10 @@ public abstract class Part {
 
     public void update(int tick){
 
+    }
+
+    public void notifyWindowResized(){
+        layout.notifyViewsChanged();
     }
 
 }

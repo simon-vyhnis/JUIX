@@ -39,4 +39,16 @@ public abstract class Layout extends View {
     }
 
     public abstract void notifyViewsChanged();
+
+    @Override
+    public void setX(String rawX) {
+        super.setX(rawX);
+        notifyViewsChanged();
+    }
+
+    @Override
+    public void setY(String rawY) {
+        super.setY(rawY);
+        notifyViewsChanged();
+    }
 }

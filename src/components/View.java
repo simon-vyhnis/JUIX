@@ -95,4 +95,9 @@ public abstract class View{
     public int getY() {
         return y;
     }
+
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
 }

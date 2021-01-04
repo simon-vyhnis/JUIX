@@ -10,6 +10,7 @@ public class PixelLayout extends Layout {
     public PixelLayout(Element xml, Layout layout, LayoutParser parser) {
         super(xml, layout, parser);
     }
+
     public void parseViews(){
         getViews().forEach((k,v)->{
             try {
