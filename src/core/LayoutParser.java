@@ -19,8 +19,10 @@ import java.util.*;
 
 public class LayoutParser {
     private final File layoutFile;
-    public LayoutParser(File layoutFile){
+    private JUIXApplication application;
+    public LayoutParser(File layoutFile, JUIXApplication application){
         this.layoutFile = layoutFile;
+        this.application = application;
     }
     /**
      * Method for parsing the root layout
@@ -32,8 +34,8 @@ public class LayoutParser {
             xmlFile = builder.build(layoutFile);
             Element root = xmlFile.getRootElement();
             Class<?> clazz = Class.forName(root.getName());
-            Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class, LayoutParser.class);
-            return (Layout)constructor.newInstance(root, null, this);
+            Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class, LayoutParser.class, JUIXApplication.class);
+            return (Layout)constructor.newInstance(root, null, this, application);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
             throw new InvalidViewReferenceException(layoutFile.getAbsolutePath(),"Root Layout");
@@ -105,8 +107,8 @@ public class LayoutParser {
                         Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class);
                         view = (View) constructor.newInstance(child, layout);
                     }else{
-                        Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class, LayoutParser.class);
-                        view = (Layout) constructor.newInstance(child, layout, this);
+                        Constructor<?> constructor = clazz.getConstructor(Element.class, Layout.class, LayoutParser.class, JUIXApplication.class);
+                        view = (Layout) constructor.newInstance(child, layout, this, application);
                     }
                     result = new AbstractMap.SimpleEntry<>(child.getAttributeValue("id"),view);
 

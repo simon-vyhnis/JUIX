@@ -2,8 +2,8 @@
 <layouts.PixelLayout>
     <Text
         id = "text1"
-        width="parent"
-        height="content"
+        width="10%"
+        height="100px"
         x="500px"
         y="400px"
         text="Title"
@@ -13,6 +13,8 @@
             id="button1"
             width="20px"
             height="30px"
+            x="300px"
+            y="50px"
     />
 
     <layouts.PixelLayout
@@ -20,6 +22,14 @@
             width="20px"
             height="30px"
             x="300px"
+            y="50px"
+    />
+    <views.SquareView
+        id="square1"
+        width="100px"
+        height="100px"
+        x="50%+-50px"
+        y="500px"
     />
 
 </layouts.PixelLayout>

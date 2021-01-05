@@ -21,7 +21,7 @@ public abstract class Part {
     protected abstract void onCreate();
 
     protected void setLayout(File layoutFile){
-        LayoutParser parser = new LayoutParser(layoutFile);
+        LayoutParser parser = new LayoutParser(layoutFile, application);
         try {
             layout = parser.parseFile();
         } catch (InvalidViewReferenceException | JDOMException | IOException e) {

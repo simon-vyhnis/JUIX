@@ -1,5 +1,6 @@
 package components;
 
+import core.JUIXApplication;
 import core.LayoutParser;
 import exceptions.InvalidViewReferenceException;
 import exceptions.MissingAttributeException;
@@ -12,11 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Layout extends View {
-    Map<String, View> views;
+    protected Map<String, View> views;
+    protected JUIXApplication application;
 
-
-    public Layout(Element xml, Layout layout, LayoutParser parser) {
+    public Layout(Element xml, Layout layout, LayoutParser parser, JUIXApplication application) {
         super(xml, layout);
+        this.application = application;
         try {
             views = parser.parseLayout(xml, this);
         } catch (MissingAttributeException | InvalidViewReferenceException e) {

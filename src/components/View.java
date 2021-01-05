@@ -53,12 +53,9 @@ public abstract class View{
     public String getRawX(){
         return rawX;
     }
-
     public String getRawY() {
         return rawY;
     }
-    public abstract int getContentWidth();
-    public abstract int getContentHeight();
 
     public void setWidth(String rawWidth) {
         this.rawWidth = rawWidth;
@@ -80,24 +77,48 @@ public abstract class View{
         layout.notifyViewsChanged();
     }
 
-    public int getWidth() {
+
+    public int getAbsoluteWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public int getAbsoluteHeight() {
         return height;
     }
 
-    public int getX() {
+    public int getAbsoluteX() {
         return x;
     }
 
-    public int getY() {
+    public int getAbsoluteY() {
         return y;
     }
 
-    public void setPosition(int x, int y){
+    public void setAbsoluteWidth(int width){
+        this.width = width;
+    }
+    public void setAbsoluteHeight(int height){
+        this.height = height;
+    }
+    public void setAbsoluteX(int x){
+        this.x = x;
+    }
+    public void setAbsoluteY(int y){
+        this.y = y;
+    }
+    public void setAbsolutePosition(int x, int y){
         this.x = x;
         this.y = y;
     }
+    public void setAbsoluteSize(int width, int height){
+        this.width = width;
+        this.height = height;
+    }
+
+    public abstract int getContentWidth();
+    public abstract int getContentHeight();
+
+
+
+
 }

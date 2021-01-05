@@ -108,12 +108,11 @@ public class JUIXApplication {
         receivers.add(receiver);
     }
 
-    public Part createPart(Class<?> partClass) throws InvalidPartException {
+    private Part createPart(Class<?> partClass) throws InvalidPartException {
         try {
             Constructor<?> constructor =  partClass.getConstructor(JUIXApplication.class);
             return (Part) constructor.newInstance(this);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            System.out.println("Invalid part!");
             e.printStackTrace();
             throw new InvalidPartException();
         }
@@ -121,6 +120,14 @@ public class JUIXApplication {
 
     private void setIcon(){
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon.png")));
+    }
+
+    public int getWindowWidth(){
+        return frame.getContentPane().getWidth();
+    }
+
+    public int getWindowHeight(){
+        return frame.getContentPane().getHeight();
     }
 
 }

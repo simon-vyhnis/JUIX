@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PixelLayoutTest {
     @Test
     public void parsePercentDimensionTest(){
-        PixelLayout test = new PixelLayout(null,null,null);
-        int result = test.parsePixelsDimension("20px");
+        PixelLayout test = new PixelLayout(null,null,null, null);
+        int result = test.parsePixelsValue("20px");
         assertEquals(20, result);
     }
 

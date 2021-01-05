@@ -2,41 +2,44 @@ package layouts;
 
 import components.Bounds;
 import components.Layout;
+import core.JUIXApplication;
 import core.LayoutParser;
 import exceptions.InvalidDimensionException;
 import org.jdom2.Element;
 
 public class PixelLayout extends Layout {
-    public PixelLayout(Element xml, Layout layout, LayoutParser parser) {
-        super(xml, layout, parser);
+    public PixelLayout(Element xml, Layout layout, LayoutParser parser, JUIXApplication application) {
+        super(xml, layout, parser, application);
     }
 
     public void parseViews(){
         getViews().forEach((k,v)->{
             try {
-                parseWholeDimension(v.getRawHeight());
-                parseWholeDimension(v.getRawY());
+                v.setAbsolutePosition(parseWholeDimension(v.getRawX(),true), parseWholeDimension(v.getRawY(),false));
+                v.setAbsoluteSize(parseWholeDimension(v.getRawWidth(),true), parseWholeDimension(v.getRawHeight(), false));
             } catch (InvalidDimensionException e) {
                 e.printStackTrace();
             }
         });
     }
-    public int parseWholeDimension(String rawDimension) throws InvalidDimensionException {
+    public int parseWholeDimension(String rawDimension, boolean isX) throws InvalidDimensionException {
         if(rawDimension.contains("+")){
             String[] singleDimensions  = rawDimension.split("\\+");
-            return parseSingleDimension(singleDimensions[0]) + parseSingleDimension(singleDimensions[1]);
+            return parseSingleDimension(singleDimensions[0],isX) + parseSingleDimension(singleDimensions[1],isX);
         }else{
-            return parseSingleDimension(rawDimension);
+            return parseSingleDimension(rawDimension,isX);
         }
     }
-    public int parseSingleDimension(String singleRawDimension) throws InvalidDimensionException {
+    public int parseSingleDimension(String singleRawDimension, boolean isX) throws InvalidDimensionException {
         try {
-            if(singleRawDimension.contains("id:")){
-                return parseIdDimension(singleRawDimension);
-            }else if(singleRawDimension.contains("px")){
-                return parsePixelsDimension(singleRawDimension);
+            if(singleRawDimension.contains("px")){
+                return parsePixelsValue(singleRawDimension);
             }else if(singleRawDimension.contains("%")){
-                return parsePercentDimension(singleRawDimension);
+                if (isX) {
+                    return parsePercentDimensionX(singleRawDimension);
+                }else{
+                    return parsePercentDimensionY(singleRawDimension);
+                }
             }else{
                 throw new InvalidDimensionException("Invalid dimension: "+singleRawDimension);
             }
@@ -45,12 +48,17 @@ public class PixelLayout extends Layout {
         }
     }
 
-    public int parsePercentDimension(String percentDimension) {
+    public int parsePercentDimensionY(String percentDimension) {
         int percent = Integer.parseInt(percentDimension.replace("%", ""));
-        return getX() / 100 * percent;
+        return application.getWindowHeight()/ 100 * percent;
     }
 
-    public int parsePixelsDimension(String pixelDimension) {
+    public int parsePercentDimensionX(String percentDimension) {
+        int percent = Integer.parseInt(percentDimension.replace("%", ""));
+        return application.getWindowWidth()/ 100 * percent;
+    }
+
+    public int parsePixelsValue(String pixelDimension) {
         return Integer.parseInt(pixelDimension.replace("px", ""));
     }
 
