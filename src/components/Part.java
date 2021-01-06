@@ -6,12 +6,13 @@ import exceptions.InvalidViewReferenceException;
 import org.jdom2.JDOMException;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
 public abstract class Part {
     private Layout layout;
-    private JUIXApplication application;
+    private final JUIXApplication application;
 
     public Part(JUIXApplication application) {
        this.application = application;
@@ -35,7 +36,11 @@ public abstract class Part {
     }
 
     public void update(int tick){
+        layout.getViews().forEach((k,v)->v.update());
+    }
 
+    public void onClick(MouseEvent e){
+        layout.onClick(e);
     }
 
     public void notifyWindowResized(){

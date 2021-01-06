@@ -8,6 +8,8 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.Map;
 public abstract class Layout extends View {
     protected Map<String, View> views;
     protected JUIXApplication application;
+
+    public abstract void notifyViewsChanged();
 
     public Layout(Element xml, Layout layout, LayoutParser parser, JUIXApplication application) {
         super(xml, layout);
@@ -26,11 +30,23 @@ public abstract class Layout extends View {
         }
     }
 
-
     @Override
     public void draw(Graphics g) {
-        views.forEach((k, v) -> v.draw(g));
+        views.forEach((id, view) -> view.draw(g));
     }
+
+    @Override
+    public void onClick(MouseEvent e){
+        super.onClick(e);
+        System.out.println("LAYOUT: "+"Layout clicked");
+        views.forEach((id, view)->{
+            if(view.getAbsoluteX() <= e.getX() && view.getAbsoluteX()+view.getAbsoluteWidth() >= e.getX() &&
+            view.getAbsoluteY() >= e.getY() && view.getAbsoluteY()+view.getAbsoluteHeight() >= e.getY()){
+                view.onClick(e);
+            }
+        });
+    }
+
 
     public Map<String, View> getViews() {
         return views;
@@ -40,7 +56,7 @@ public abstract class Layout extends View {
         return views.get(id);
     }
 
-    public abstract void notifyViewsChanged();
+
 
     @Override
     public void setX(String rawX) {

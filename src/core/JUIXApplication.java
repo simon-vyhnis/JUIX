@@ -8,12 +8,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class JUIXApplication {
+public class JUIXApplication implements MouseListener {
     private JFrame frame;
     private Canvas canvas;
 
@@ -44,9 +46,16 @@ public class JUIXApplication {
                 currentPart.notifyWindowResized();
             }
         });
-        setIcon();
+        JPanel newContentPane = new JPanel();
+        newContentPane.addMouseListener(this);
+        newContentPane.setOpaque(true);
+        //TODO: fix Jframe and canvas
         canvas = new Canvas();
-        frame.add(canvas);
+        newContentPane.add(canvas);
+        frame.setContentPane(newContentPane);
+        setIcon();
+
+        frame.pack();
         frame.setVisible(true);
         Cycle cycle = new Cycle(this);
         cycle.start();
@@ -130,4 +139,29 @@ public class JUIXApplication {
         return frame.getContentPane().getHeight();
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        currentPart.onClick(e);
+        System.out.println("JUIXApplication: Frame clicked");
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

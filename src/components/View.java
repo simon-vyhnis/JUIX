@@ -4,10 +4,12 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class View{
-    private String id;
+    private final String id;
 
     private String rawWidth;
     private String rawHeight;
@@ -18,19 +20,20 @@ public abstract class View{
     private int x = -1;
     private int y = -1;
 
-    private Layout layout;
+    private final Layout layout;
 
-    public static final int DIMENSION_PIXELS = 0;
-    public static final int DIMENSION_DISPLAY_POINTS = 1;
-    public static final int DIMENSION_PARENT = 2;
-    public static final int DIMENSION_CONTENT = 3;
+    private final List<OnClickListener> onClickListeners;
+
 
     public View(Element xml, Layout layout){
        rawHeight = xml.getAttributeValue("height");
        rawWidth = xml.getAttributeValue("width");
        rawX = xml.getAttributeValue("x");
        rawY = xml.getAttributeValue("y");
+       id = xml.getAttributeValue("id");
        this.layout = layout;
+
+       onClickListeners = new ArrayList<>(1);
     }
 
     /*
@@ -42,6 +45,25 @@ public abstract class View{
      */
     public void update(){
 
+    }
+
+    public void onClick(MouseEvent e){
+        for (OnClickListener listener : onClickListeners) {
+            listener.onClick(this);
+            System.out.println("VIEW: View clicked: "+id);
+        }
+    }
+
+    public void addOnClickListener(OnClickListener listener){
+        onClickListeners.add(listener);
+    }
+
+    public void removeOnClickListener(OnClickListener listener){
+        onClickListeners.remove(listener);
+    }
+
+    public String getId(){
+        return id;
     }
 
     public String getRawWidth(){
@@ -61,17 +83,14 @@ public abstract class View{
         this.rawWidth = rawWidth;
         layout.notifyViewsChanged();
     }
-
     public void setHeight(String rawHeight) {
         this.rawHeight = rawHeight;
         layout.notifyViewsChanged();
     }
-
     public void setX(String rawX) {
         this.rawX = rawX;
         layout.notifyViewsChanged();
     }
-
     public void setY(String rawY) {
         this.rawY = rawY;
         layout.notifyViewsChanged();
@@ -81,15 +100,12 @@ public abstract class View{
     public int getAbsoluteWidth() {
         return width;
     }
-
     public int getAbsoluteHeight() {
         return height;
     }
-
     public int getAbsoluteX() {
         return x;
     }
-
     public int getAbsoluteY() {
         return y;
     }

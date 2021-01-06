@@ -10,6 +10,11 @@ import java.awt.*;
 import java.util.List;
 
 public class ButtonView extends View {
+    private Color color;
+    private boolean roundedCorners;
+
+    private String text;
+    private Color textColor;
 
 
     public ButtonView(Element xml, Layout layout) {

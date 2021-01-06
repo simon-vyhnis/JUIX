@@ -10,20 +10,21 @@ import java.awt.*;
 import java.util.List;
 
 public class TextView extends View {
-    private String text = "TextView";
-    private int x=-1;
-    private int y=-1;
-    private int width;
-    private int height;
+    private String text;
+    private int textSize;
+    private String font;
+    private Color textColor;
+
 
     public TextView(Element xml, Layout layout) {
         super(xml, layout);
+
     }
 
     @Override
     public void draw(Graphics g) {
         if (text!=null)
-            g.drawString(text,x,y);
+            g.drawString(text,getAbsoluteX(),getAbsoluteY());
     }
 
     @Override
@@ -47,5 +48,29 @@ public class TextView extends View {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public String getFont() {
+        return font;
+    }
+
+    public void setFont(String font) {
+        this.font = font;
+    }
+
+    public Color getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(Color textColor) {
+        this.textColor = textColor;
     }
 }
