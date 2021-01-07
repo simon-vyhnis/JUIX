@@ -32,6 +32,7 @@ public abstract class View{
        rawY = xml.getAttributeValue("y");
        id = xml.getAttributeValue("id");
        this.layout = layout;
+       System.out.println("VIEW: View created "+id);
 
        onClickListeners = new ArrayList<>(1);
     }

@@ -13,15 +13,17 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JUIXApplication implements MouseListener {
     private JFrame frame;
+    private JPanel panel;
     private Canvas canvas;
 
     private Part currentPart;
 
-    private int ticksPerSecond;
+    private final int ticksPerSecond = 60;
 
     private List<UpdateReceiver> receivers;
 
@@ -29,36 +31,42 @@ public class JUIXApplication implements MouseListener {
      * If you do not need anything else to to define than name and start components.Part than use this constructor.
      */
     public JUIXApplication(@NotNull String name, @NotNull Class<?> startPartClass ){
+        frame = new JFrame();
+        panel = new JPanel();
+        canvas = new Canvas();
+        receivers = new ArrayList<>(0);
+        frame.setTitle(name);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        canvas.addMouseListener(this);
+        panel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                if(currentPart!=null)
+                    currentPart.notifyWindowResized();
+                canvas.setBounds(0,0,panel.getWidth(),panel.getHeight());
+            }
+        });
+        panel.setPreferredSize(new Dimension(800,500));
+        panel.setLayout(null);
+        panel.setVisible(true);
+        frame.setContentPane(panel);
+        frame.add(canvas);
+        canvas.setBounds(0,0,panel.getWidth(),panel.getHeight());
+        canvas.setBackground(new Color(196, 255, 255));
+        setIcon();
+
+        panel.validate();
+        frame.pack();
+        frame.setVisible(true);
         try {
             currentPart = createPart(startPartClass);
         } catch (InvalidPartException e) {
             e.printStackTrace();
         }
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame = new JFrame();
-        frame.setTitle(name);
-        frame.setBounds(0, 0, screenSize.width, screenSize.height);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                currentPart.notifyWindowResized();
-            }
-        });
-        JPanel newContentPane = new JPanel();
-        newContentPane.addMouseListener(this);
-        newContentPane.setOpaque(true);
-        //TODO: fix Jframe and canvas
-        canvas = new Canvas();
-        newContentPane.add(canvas);
-        frame.setContentPane(newContentPane);
-        setIcon();
+        createLooper();
 
-        frame.pack();
-        frame.setVisible(true);
-        Cycle cycle = new Cycle(this);
-        cycle.start();
     }
 
     void draw(){
@@ -85,6 +93,14 @@ public class JUIXApplication implements MouseListener {
         }
     }
 
+    private void createLooper(){
+        Thread thread = new Thread(() -> {
+                    Cycle cycle = new Cycle(this);
+                    cycle.start();
+                }, "JUIX Thread");
+     thread.start();
+    }
+
     /**
      * Use this constructor if you want to build JUIX application with config file.
      * A config file have to contain at least name and start part. Learn more about config files <a>here<a/>.
@@ -100,7 +116,12 @@ public class JUIXApplication implements MouseListener {
     public JFrame getFrame(){
         return frame;
     }
-
+    public JPanel getPanel(){
+        return panel;
+    }
+    public Canvas getCanvas(){
+        return canvas;
+    }
     /*
      * Returns tick per second, what is the app currently running.
      */
@@ -132,17 +153,16 @@ public class JUIXApplication implements MouseListener {
     }
 
     public int getWindowWidth(){
-        return frame.getContentPane().getWidth();
+        return panel.getWidth();
     }
 
     public int getWindowHeight(){
-        return frame.getContentPane().getHeight();
+        return panel.getHeight();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         currentPart.onClick(e);
-        System.out.println("JUIXApplication: Frame clicked");
     }
 
     @Override

@@ -14,7 +14,9 @@ public class SquareView extends View {
     @Override
     public void draw(Graphics g) {
         g.fillRect(getAbsoluteX(),getAbsoluteY(),getAbsoluteWidth(),getAbsoluteHeight());
+
     }
+
 
     @Override
     public int getContentWidth() {

@@ -25,6 +25,9 @@ public abstract class Part {
         LayoutParser parser = new LayoutParser(layoutFile, application);
         try {
             layout = parser.parseFile();
+            layout.setAbsolutePosition(0,0);
+            layout.setAbsoluteSize(application.getWindowWidth(),application.getWindowHeight());
+            layout.notifyViewsChanged();
         } catch (InvalidViewReferenceException | JDOMException | IOException e) {
             e.printStackTrace();
         }
@@ -44,6 +47,7 @@ public abstract class Part {
     }
 
     public void notifyWindowResized(){
+        layout.setAbsoluteSize(application.getWindowWidth(),application.getWindowHeight());
         layout.notifyViewsChanged();
     }
 

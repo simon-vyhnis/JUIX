@@ -23,8 +23,9 @@ public class TextView extends View {
 
     @Override
     public void draw(Graphics g) {
-        if (text!=null)
-            g.drawString(text,getAbsoluteX(),getAbsoluteY());
+        if (text!=null) {
+            g.drawString(text, getAbsoluteX(), getAbsoluteY());
+        }
     }
 
     @Override
