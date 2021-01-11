@@ -35,7 +35,7 @@
         width="100px"
         height="100px"
         x="center"
-        y="500px"
+        y="center"
     />
 
 </layouts.PixelLayout>

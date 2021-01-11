@@ -8,6 +8,12 @@
         y="400px"
         text="Title"
     />
+    <views.SquareView
+        id="square0"
+        width="100px"
+        height="100px"
+        x="0px"
+        y="0px"/>
 
     <Button
             id="button1"
@@ -18,7 +24,7 @@
     />
 
     <layouts.PixelLayout
-            id="button1"
+            id="layout1"
             width="20px"
             height="30px"
             x="300px"
@@ -28,8 +34,8 @@
         id="square1"
         width="100px"
         height="100px"
-        x="50%+-50px"
-        y="500px"
+        x="center"
+        y="center"
     />
 
 </layouts.PixelLayout>

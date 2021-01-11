@@ -10,10 +10,10 @@ import java.awt.*;
 import java.util.List;
 
 public class TextView extends View {
-    private String text;
-    private int textSize;
-    private String font;
-    private Color textColor;
+    private String text = "Test text";
+    private int textSize = 12;
+    private String font = "Arial";
+    private Color textColor = Color.BLACK;
 
 
     public TextView(Element xml, Layout layout) {
@@ -24,6 +24,8 @@ public class TextView extends View {
     @Override
     public void draw(Graphics g) {
         if (text!=null) {
+            g.setColor(textColor);
+            g.setFont(new Font(font,Font.PLAIN,textSize));
             g.drawString(text, getAbsoluteX(), getAbsoluteY());
         }
     }

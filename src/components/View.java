@@ -51,8 +51,8 @@ public abstract class View{
     public void onClick(MouseEvent e){
         for (OnClickListener listener : onClickListeners) {
             listener.onClick(this);
-            System.out.println("VIEW: View clicked: "+id);
         }
+        System.out.println("VIEW: View clicked: "+id);
     }
 
     public void addOnClickListener(OnClickListener listener){

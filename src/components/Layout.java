@@ -41,7 +41,7 @@ public abstract class Layout extends View {
         System.out.println("LAYOUT: "+"Layout clicked");
         views.forEach((id, view)->{
             if(view.getAbsoluteX() <= e.getX() && view.getAbsoluteX()+view.getAbsoluteWidth() >= e.getX() &&
-            view.getAbsoluteY() >= e.getY() && view.getAbsoluteY()+view.getAbsoluteHeight() >= e.getY()){
+            view.getAbsoluteY() <= e.getY() && view.getAbsoluteY()+view.getAbsoluteHeight() >= e.getY()){
                 view.onClick(e);
             }
         });
