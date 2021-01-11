@@ -69,4 +69,7 @@ public abstract class Layout extends View {
         super.setY(rawY);
         notifyViewsChanged();
     }
+    public JUIXApplication getApplication(){
+        return application;
+    }
 }

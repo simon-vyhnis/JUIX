@@ -11,6 +11,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class JUIXApplication implements MouseListener {
     private final int ticksPerSecond = 60;
 
     private List<UpdateReceiver> receivers;
+    private JUIXColors colors;
 
     /**
      * If you do not need anything else to to define than name and start components.Part than use this constructor.
@@ -35,6 +37,7 @@ public class JUIXApplication implements MouseListener {
         panel = new JPanel();
         canvas = new Canvas();
         receivers = new ArrayList<>(0);
+        colors = new JUIXColors(getClass().getClassLoader().getResource("configFiles/colors.xml"));
         frame.setTitle(name);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -122,6 +125,9 @@ public class JUIXApplication implements MouseListener {
     public Canvas getCanvas(){
         return canvas;
     }
+    public JUIXColors getColors(){
+        return colors;
+    }
     /*
      * Returns tick per second, what is the app currently running.
      */
@@ -155,7 +161,6 @@ public class JUIXApplication implements MouseListener {
     public int getWindowWidth(){
         return panel.getWidth();
     }
-
     public int getWindowHeight(){
         return panel.getHeight();
     }

@@ -10,14 +10,16 @@ import java.awt.*;
 
 public class AttributesParser {
     private final Element xml;
+    private final JUIXApplication application;
 
-    public AttributesParser(Element xml) {
+    public AttributesParser(Element xml, JUIXApplication application) {
         this.xml = xml;
+        this.application = application;
     }
 
     public int getIntValue(String name, int defaultValue) throws InvalidAttributeException {
         Attribute attribute = xml.getAttribute(name);
-        if(attribute.isSpecified()){
+        if(attribute != null && attribute.isSpecified()){
             try {
                 return attribute.getIntValue();
             } catch (DataConversionException e) {
@@ -33,14 +35,14 @@ public class AttributesParser {
 
     public float getFloatValue(String name, int defaultValue) throws InvalidAttributeException {
         Attribute attribute = xml.getAttribute(name);
-        if(attribute.isSpecified()){
+        if(attribute != null && attribute.isSpecified()){
             try {
                 return attribute.getFloatValue();
             } catch (DataConversionException e) {
                 e.printStackTrace();
                 throw new InvalidAttributeException(
                         "Invalid attribute: "+attribute.getName()+
-                                " view: "+xml.getAttributeValue("id"));
+                        " view: "+xml.getAttributeValue("id"));
             }
         }else {
             return defaultValue;
@@ -50,16 +52,40 @@ public class AttributesParser {
 
     public String getStringValue(String name, String defaultValue){
         Attribute attribute = xml.getAttribute(name);
-        if (attribute.isSpecified()){
+        if (attribute != null && attribute.isSpecified()){
             return attribute.getValue();
         }else {
             return defaultValue;
         }
     }
 
-    public Color getColor(String name, Color defaultColor){
+    public int getStringOptionsValue(String name, String[] options, int defaultValue) throws InvalidAttributeException {
         Attribute attribute = xml.getAttribute(name);
-            return defaultColor;
+        if (attribute != null && attribute.isSpecified()){
+            for (int i=0; i<options.length;i++) {
+                if (options[i].equals(attribute.getValue())){
+                    return i;
+                }
+            }
+            throw new InvalidAttributeException(
+                    "Invalid attribute: "+attribute.getName()+
+                    " view: "+xml.getAttributeValue("id"));
+        }else {
+            return defaultValue;
+        }
+    }
+
+    public Color getColor(String name, Color defaultColor) throws InvalidAttributeException {
+        Attribute attribute = xml.getAttribute(name);
+        if (attribute != null && attribute.isSpecified()){
+             Color result = application.getColors().getColor(attribute.getValue());
+             if(result == null){
+                 throw new InvalidAttributeException("Invalid color: "+attribute.getValue()+" view: "+xml.getAttributeValue("id"));
+             }else {
+                 return result;
+             }
+        }
+        return defaultColor;
     }
 
 

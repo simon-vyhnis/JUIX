@@ -13,7 +13,9 @@
         width="100px"
         height="100px"
         x="0px"
-        y="0px"/>
+        y="0px"
+        color="primaryColor"
+    />
 
     <Button
             id="button1"

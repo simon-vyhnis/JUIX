@@ -19,7 +19,7 @@ import java.util.*;
 
 public class LayoutParser {
     private final File layoutFile;
-    private JUIXApplication application;
+    private final JUIXApplication application;
     public LayoutParser(File layoutFile, JUIXApplication application){
         this.layoutFile = layoutFile;
         this.application = application;
