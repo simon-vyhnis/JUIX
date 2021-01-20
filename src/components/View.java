@@ -146,7 +146,11 @@ public abstract class View{
     public abstract int getContentWidth();
     public abstract int getContentHeight();
 
-
+    protected void notifyIfNeeded(){
+        if(getRawHeight().equals("content") || getRawWidth().equals("content")){
+            layout.notifyViewsChanged();
+        }
+    }
 
 
 }

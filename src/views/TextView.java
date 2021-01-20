@@ -46,7 +46,6 @@ public class TextView extends View {
         }
         if(textHeight != g.getFontMetrics().getHeight())
             textHeight = g.getFontMetrics().getHeight();
-            System.out.println(textHeight);
             notifyIfNeeded();
     }
 
@@ -71,7 +70,6 @@ public class TextView extends View {
 
     public void setText(String text) {
         this.text = text;
-        notifyIfNeeded();
     }
 
     public int getTextSize() {
@@ -80,7 +78,6 @@ public class TextView extends View {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
-        notifyIfNeeded();
     }
 
     public String getFont() {
@@ -89,7 +86,6 @@ public class TextView extends View {
 
     public void setFont(String font) {
         this.font = font;
-       notifyIfNeeded();
     }
 
     public Color getTextColor() {
@@ -100,9 +96,4 @@ public class TextView extends View {
         this.textColor = textColor;
     }
 
-    private void notifyIfNeeded(){
-        if(getRawHeight().equals("content") || getRawWidth().equals("content")){
-            layout.notifyViewsChanged();
-        }
-    }
 }

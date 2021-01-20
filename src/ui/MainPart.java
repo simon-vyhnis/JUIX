@@ -15,7 +15,7 @@ public class MainPart extends Part {
     protected void onCreate() {
         File file = null;
         try {
-            file = new File(getClass().getClassLoader().getResource("file.txt").toURI());
+            file = new File(getClass().getClassLoader().getResource("layouts/main_layout.xml").toURI());
         } catch (URISyntaxException | NullPointerException e) {
             e.printStackTrace();
         }

@@ -56,7 +56,9 @@ public class JUIXApplication implements MouseListener, KeyListener, MouseMotionL
         frame.setContentPane(panel);
         frame.add(canvas);
         canvas.setBounds(0,0,panel.getWidth(),panel.getHeight());
-        canvas.setBackground(new Color(196, 255, 255));
+        Color background = colors.getColor("backgroundColor");
+        if(background != null)
+            canvas.setBackground(background);
         setIcon();
 
         panel.validate();

@@ -86,16 +86,11 @@ public class TextInputView extends View {
         if(cursor == null) {
             cursor = new JUIXCursor(layout.getApplication(), textColor, getAbsoluteX() + 10);
         }
-        cursor.cursorPos = parseCursorPos(e.getX());
+        if(!text.isEmpty())
+            cursor.move(e.getX()- getAbsoluteX() - 10);
     }
 
-    public int parseCursorPos(int clickX){
-        clickX = clickX - getAbsoluteX();
 
-
-
-        return 0;
-    }
     public void keyTyped(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             if (cursor.cursorPos > 0) {
@@ -134,7 +129,6 @@ public class TextInputView extends View {
         super.onCursorEnter();
         layout.getApplication().setCursor(new Cursor(Cursor.TEXT_CURSOR));
     }
-
     @Override
     public void onCursorExit() {
         super.onCursorExit();
@@ -145,7 +139,6 @@ public class TextInputView extends View {
     public int getContentWidth() {
         return 0;
     }
-
     @Override
     public int getContentHeight() {
         return 0;
@@ -200,8 +193,10 @@ public class TextInputView extends View {
         private final int ticksPerSecond;
         private final Color color;
         private int cursorPos = 0;
-        private int x;
-        private int y;
+        private final int x;
+
+        private boolean needsMove = false;
+        private int clickX;
 
         private JUIXCursor(JUIXApplication application, Color color, int x) {
             ticksPerSecond = application.getTicksPerSecond();
@@ -217,15 +212,29 @@ public class TextInputView extends View {
             }
         }
         public void draw(Graphics g, int y){
+            if(needsMove) {
+                cursorPos = 0;
+                while (g.getFontMetrics().stringWidth(text.substring(0, cursorPos)) <= clickX && cursorPos < text.length()) {
+                    System.out.println(g.getFontMetrics().stringWidth(text.substring(0, cursorPos)));
+                    cursorPos++;
+                }
+                //handles the click inside of character
+                if(clickX - g.getFontMetrics().stringWidth(text.substring(0, cursorPos-1)) < g.getFontMetrics().stringWidth(text.substring(0, cursorPos)) - clickX){
+                    cursorPos--;
+                }
+                needsMove = false;
+            }
+
             if (isDisplayed){
                 g.setColor(color);
                 int pos = g.getFontMetrics().stringWidth(text.substring(0,cursorPos));
                 g.drawLine(x+pos,y,x+pos,y+g.getFontMetrics().getHeight());
-
             }
         }
-        public void setX(int x){
-            this.x = x;
+        public void move(int clickX){
+            System.out.println("Click X: "+clickX);
+            needsMove = true;
+            this.clickX = clickX;
             isDisplayed = true;
             tickCounter = 0;
         }

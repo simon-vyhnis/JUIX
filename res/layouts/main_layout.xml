@@ -5,8 +5,8 @@
         width="content"
         height="content"
         x="center"
-        y="400px"
-        text="Very very veryyyy long Title, but even longeeeeeeeeeer"
+        y="30px"
+        text="Hello, I am your first layout..."
     />
     <views.SquareView
         id="square0"
