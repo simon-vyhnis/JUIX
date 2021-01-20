@@ -14,6 +14,8 @@ public class TextView extends View {
     private int textSize = 12;
     private String font = "Arial";
     private Color textColor = Color.BLACK;
+    private int textWidth;
+    private int textHeight;
 
 
     public TextView(Element xml, Layout layout) {
@@ -27,7 +29,9 @@ public class TextView extends View {
             g.setColor(textColor);
             g.setFont(new Font(font,Font.PLAIN,textSize));
             g.drawString(text, getAbsoluteX(), getAbsoluteY());
+            textWidth = g.getFontMetrics().stringWidth(text);
         }
+        textHeight = g.getFontMetrics().getHeight();
     }
 
     @Override
@@ -37,12 +41,12 @@ public class TextView extends View {
 
     @Override
     public int getContentWidth() {
-        return 0;
+        return textWidth;
     }
 
     @Override
     public int getContentHeight() {
-        return 0;
+        return textHeight;
     }
 
     public String getText() {

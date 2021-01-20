@@ -21,7 +21,9 @@ public abstract class View{
     private int x = -1;
     private int y = -1;
 
-    private final Layout layout;
+    private boolean isDragged;
+
+    protected final Layout layout;
 
     private final List<OnClickListener> onClickListeners;
 
@@ -54,6 +56,14 @@ public abstract class View{
             listener.onClick(this);
         }
         System.out.println("VIEW: View clicked: "+id);
+    }
+
+    public void onCursorEnter(){
+        isDragged = true;
+    }
+
+    public void onCursorExit(){
+        isDragged = false;
     }
 
     public void addOnClickListener(OnClickListener listener){

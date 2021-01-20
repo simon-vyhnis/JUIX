@@ -6,6 +6,7 @@ import exceptions.InvalidViewReferenceException;
 import org.jdom2.JDOMException;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +45,12 @@ public abstract class Part {
 
     public void onClick(MouseEvent e){
         layout.onClick(e);
+    }
+    public void keyTyped(KeyEvent e){
+        layout.keyTyped(e);
+    }
+    public void mouseMove(MouseEvent e){
+        layout.mouseMove(e);
     }
 
     public void notifyWindowResized(){

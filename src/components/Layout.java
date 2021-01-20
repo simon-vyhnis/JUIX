@@ -6,8 +6,10 @@ import exceptions.InvalidViewReferenceException;
 import exceptions.MissingAttributeException;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
+import views.TextInputView;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -17,6 +19,8 @@ import java.util.Map;
 public abstract class Layout extends View {
     protected Map<String, View> views;
     protected JUIXApplication application;
+    private TextInputView activeInput;
+    private View draggedView;
 
     public abstract void notifyViewsChanged();
 
@@ -39,12 +43,47 @@ public abstract class Layout extends View {
     public void onClick(MouseEvent e){
         super.onClick(e);
         System.out.println("LAYOUT: "+"Layout clicked");
+        if(draggedView != null){
+            draggedView.onClick(e);
+        }
+        if(activeInput != null && activeInput != draggedView) {
+            activeInput.stopBeingActive();
+            activeInput = null;
+        }
+    }
+    public void keyTyped(KeyEvent e){
+        if(activeInput != null){
+            activeInput.keyTyped(e);
+        }else{
+            views.forEach((id, view)->{
+               if(view instanceof Layout){
+                   ((Layout) view).keyTyped(e);
+               }
+            });
+        }
+    }
+    public void mouseMove(MouseEvent e){
+        if(draggedView != null && !isViewDragged(draggedView ,e)){
+            draggedView.onCursorExit();
+        }
+        draggedView = null;
         views.forEach((id, view)->{
-            if(view.getAbsoluteX() <= e.getX() && view.getAbsoluteX()+view.getAbsoluteWidth() >= e.getX() &&
-            view.getAbsoluteY() <= e.getY() && view.getAbsoluteY()+view.getAbsoluteHeight() >= e.getY()){
-                view.onClick(e);
+            if(isViewDragged(view,e)){
+                draggedView = view;
+                draggedView.onCursorEnter();
             }
         });
+        if(draggedView == null){
+            application.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+
+    }
+
+    public boolean isViewDragged(View view, MouseEvent e){
+        return view.getAbsoluteX() <= e.getX() &&
+                view.getAbsoluteX()+view.getAbsoluteWidth() >= e.getX() &&
+                view.getAbsoluteY() <= e.getY() &&
+                view.getAbsoluteY()+view.getAbsoluteHeight() >= e.getY();
     }
 
 
@@ -56,7 +95,9 @@ public abstract class Layout extends View {
         return views.get(id);
     }
 
-
+    public void setActiveInput(TextInputView view){
+        activeInput = view;
+    }
 
     @Override
     public void setX(String rawX) {

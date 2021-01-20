@@ -6,10 +6,7 @@ import exceptions.InvalidPartException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -17,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JUIXApplication implements MouseListener {
+public class JUIXApplication implements MouseListener, KeyListener, MouseMotionListener {
     private JFrame frame;
     private JPanel panel;
     private Canvas canvas;
@@ -42,6 +39,8 @@ public class JUIXApplication implements MouseListener {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         canvas.addMouseListener(this);
+        canvas.addKeyListener(this);
+        canvas.addMouseMotionListener(this);
         panel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -158,6 +157,10 @@ public class JUIXApplication implements MouseListener {
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon.png")));
     }
 
+    public void setCursor(Cursor cursor){
+        frame.setCursor(cursor);
+    }
+
     public int getWindowWidth(){
         return panel.getWidth();
     }
@@ -165,28 +168,46 @@ public class JUIXApplication implements MouseListener {
         return panel.getHeight();
     }
 
+    //MouseListener methods
     @Override
     public void mouseClicked(MouseEvent e) {
         currentPart.onClick(e);
     }
-
     @Override
     public void mousePressed(MouseEvent e) {
 
     }
-
     @Override
     public void mouseReleased(MouseEvent e) {
 
     }
-
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
-
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    //KeyListener methods
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+        currentPart.keyTyped(e);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        currentPart.mouseMove(e);
     }
 }

@@ -49,6 +49,22 @@ public class AttributesParser {
         }
     }
 
+    public boolean getBooleanValue(String name, boolean defaultValue) throws InvalidAttributeException {
+        Attribute attribute = xml.getAttribute(name);
+        if(attribute != null && attribute.isSpecified()){
+            try {
+                return attribute.getBooleanValue();
+            } catch (DataConversionException e) {
+                e.printStackTrace();
+                throw new InvalidAttributeException(
+                        "Invalid attribute: "+attribute.getName()+
+                                " view: "+xml.getAttributeValue("id"));
+            }
+        }else {
+            return defaultValue;
+        }
+    }
+
 
     public String getStringValue(String name, String defaultValue){
         Attribute attribute = xml.getAttribute(name);

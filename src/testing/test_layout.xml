@@ -2,8 +2,8 @@
 <layouts.PixelLayout>
     <Text
         id = "text1"
-        width="10%"
-        height="100px"
+        width="50px"
+        height="20px"
         x="500px"
         y="400px"
         text="Title"
@@ -38,6 +38,14 @@
         height="100px"
         x="center"
         y="center"
+    />
+    <views.TextInputView
+        id="input"
+        width="300px"
+        height="50px"
+        x="400px"
+        y="300px"
+        hint="Name"
     />
 
 </layouts.PixelLayout>
