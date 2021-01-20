@@ -20,7 +20,7 @@ public class ButtonView extends View {
     private Color textColor;
     private int textSize;
 
-    private int textWidth, textHeight;
+    private int textWidth = 0, textHeight = 0;
 
 
     public ButtonView(Element xml, Layout layout) {
@@ -40,6 +40,12 @@ public class ButtonView extends View {
 
     @Override
     public void draw(Graphics g) {
+        if(textHeight != g.getFontMetrics().getHeight() || textWidth != g.getFontMetrics().stringWidth(text)){
+            textHeight = g.getFontMetrics().getHeight();
+            textWidth = g.getFontMetrics().stringWidth(text);
+            notifyIfNeeded();
+        }
+
         g.setColor(color);
         g.fillRect(getAbsoluteX(),getAbsoluteY(),getAbsoluteWidth(),getAbsoluteHeight());
         if(roundedCorners){
@@ -55,12 +61,6 @@ public class ButtonView extends View {
 
         g.setColor(textColor);
         g.drawString(text,getAbsoluteX()+10,getAbsoluteY()+((getAbsoluteHeight()-g.getFontMetrics().getHeight())/2)+g.getFontMetrics().getAscent());
-
-        if(textHeight != g.getFontMetrics().getHeight() || textWidth != g.getFontMetrics().stringWidth(text)){
-            textHeight = g.getFontMetrics().getHeight();
-            textWidth = g.getFontMetrics().stringWidth(text);
-            notifyIfNeeded();
-        }
 
     }
 
