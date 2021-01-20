@@ -3,6 +3,8 @@ package views;
 import components.Bounds;
 import components.Layout;
 import components.View;
+import core.AttributesParser;
+import exceptions.InvalidAttributeException;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
@@ -10,16 +12,25 @@ import java.awt.*;
 import java.util.List;
 
 public class TextView extends View {
-    private String text = "Test text";
-    private int textSize = 12;
-    private String font = "Arial";
-    private Color textColor = Color.BLACK;
-    private int textWidth;
-    private int textHeight;
+    private String text;
+    private int textSize;
+    private String font;
+    private Color textColor;
+    private int textWidth = 0;
+    private int textHeight = 0;
 
 
     public TextView(Element xml, Layout layout) {
         super(xml, layout);
+        AttributesParser attributes = new AttributesParser(xml, layout.getApplication());
+        try {
+            text = attributes.getStringValue("text", "");
+            textSize = attributes.getIntValue("textSize",12);
+            font = attributes.getStringValue("font", "Arial");
+            textColor = attributes.getColor("textColor", Color.black);
+        } catch (InvalidAttributeException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -29,9 +40,17 @@ public class TextView extends View {
             g.setColor(textColor);
             g.setFont(new Font(font,Font.PLAIN,textSize));
             g.drawString(text, getAbsoluteX(), getAbsoluteY());
-            textWidth = g.getFontMetrics().stringWidth(text);
+            if(textWidth != g.getFontMetrics().stringWidth(text))
+                textWidth = g.getFontMetrics().stringWidth(text);
+                notifyIfNeeded();
+            g.setColor(Color.red);
+            g.drawRect(getAbsoluteX(),getAbsoluteY(),getAbsoluteWidth(),getAbsoluteHeight());
+            System.out.println(getAbsoluteX()+" "+getAbsoluteY()+" "+getAbsoluteWidth()+" "+getAbsoluteHeight());
         }
-        textHeight = g.getFontMetrics().getHeight();
+        if(textHeight != g.getFontMetrics().getHeight())
+            textHeight = g.getFontMetrics().getHeight();
+            System.out.println(textHeight);
+            notifyIfNeeded();
     }
 
     @Override
@@ -55,6 +74,7 @@ public class TextView extends View {
 
     public void setText(String text) {
         this.text = text;
+        notifyIfNeeded();
     }
 
     public int getTextSize() {
@@ -63,6 +83,7 @@ public class TextView extends View {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
+        notifyIfNeeded();
     }
 
     public String getFont() {
@@ -71,6 +92,7 @@ public class TextView extends View {
 
     public void setFont(String font) {
         this.font = font;
+       notifyIfNeeded();
     }
 
     public Color getTextColor() {
@@ -79,5 +101,11 @@ public class TextView extends View {
 
     public void setTextColor(Color textColor) {
         this.textColor = textColor;
+    }
+
+    private void notifyIfNeeded(){
+        if(getRawHeight().equals("content") || getRawWidth().equals("content")){
+            layout.notifyViewsChanged();
+        }
     }
 }

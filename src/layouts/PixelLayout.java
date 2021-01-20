@@ -37,21 +37,33 @@ public class PixelLayout extends Layout {
     }
     public int parseSingleDimension(String singleRawDimension, int dimensionType, View view) throws InvalidDimensionException {
         try {
+            //Pixel dimension
             if(singleRawDimension.contains("px")){
                 return parsePixelsValue(singleRawDimension);
+            //Percent dimension
             }else if(singleRawDimension.contains("%")) {
                 if (dimensionType == DIMENSION_WIDTH || dimensionType == DIMENSION_X) {
                     return parsePercentDimensionX(singleRawDimension);
                 } else {
                     return parsePercentDimensionY(singleRawDimension);
                 }
+            //Center Dimension
             }else if(singleRawDimension.equals("center")){
                 if (dimensionType == DIMENSION_X) {
                     return parsePercentDimensionX("50%")-(view.getAbsoluteWidth()/2);
-                } else if(dimensionType == DIMENSION_Y){
-                    return parsePercentDimensionY("50%")-(view.getAbsoluteHeight()/2);
+                } else if(dimensionType == DIMENSION_Y) {
+                    return parsePercentDimensionY("50%") - (view.getAbsoluteHeight() / 2);
                 }else{
                     throw new InvalidDimensionException("Invalid dimension: "+singleRawDimension+" view: "+view.getId());
+                }
+            //Content dimension
+            }else if(singleRawDimension.equals("content")) {
+                if (dimensionType == DIMENSION_WIDTH) {
+                    return view.getContentWidth();
+                } else if (dimensionType == DIMENSION_HEIGHT) {
+                    return view.getContentHeight();
+                } else {
+                    throw new InvalidDimensionException("Invalid dimension: " + singleRawDimension + " view: " + view.getId());
                 }
             }else{
                 throw new InvalidDimensionException("Invalid dimension: "+singleRawDimension+" view: "+view.getId());

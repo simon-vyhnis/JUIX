@@ -49,10 +49,10 @@ public class TextInputView extends View {
         }else {
             g.fillRect(getAbsoluteX(),getAbsoluteY(),getContentWidth(),getAbsoluteHeight());
         }
-        g.setFont(new Font("Arial", Font.PLAIN, textSize));
+        g.setFont(new Font(font, Font.PLAIN, textSize));
         while(g.getFontMetrics().getHeight() > getAbsoluteHeight()-4){
             textSize--;
-            g.setFont(new Font("Arial", Font.PLAIN, textSize));
+            g.setFont(new Font(font, Font.PLAIN, textSize));
         }
         if((text.isEmpty()) && !active){
             g.setColor(hintColor);
@@ -97,7 +97,6 @@ public class TextInputView extends View {
         return 0;
     }
     public void keyTyped(KeyEvent e) {
-        System.out.println("EDIT TEXT: key typed: "+e.getExtendedKeyCode());
         if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             if (cursor.cursorPos > 0) {
                 StringBuilder builder = new StringBuilder(text);
@@ -115,10 +114,11 @@ public class TextInputView extends View {
             cursor.cursorPos++;
         }else if(e.getKeyCode() == KeyEvent.VK_LEFT && cursor.cursorPos != 0) {
             cursor.cursorPos--;
-        }else if((int) e.getKeyChar() != 65535 && (int) e.getKeyChar() != 27){
+        }else if(Character.isDefined(e.getKeyChar())){
             //65535 is value, that returns function keys, 27 returns esc
+            Font currentFont = new Font(font, Font.PLAIN, textSize);
+            currentFont.canDisplay(e.getKeyChar());
             text = text + e.getKeyChar();
-            System.out.println((int) e.getKeyChar());
 
             //Moves cursor as you type
             if(cursor != null && cursor.cursorPos == text.length()-1){

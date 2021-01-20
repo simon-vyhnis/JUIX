@@ -171,7 +171,8 @@ public class JUIXApplication implements MouseListener, KeyListener, MouseMotionL
     //MouseListener methods
     @Override
     public void mouseClicked(MouseEvent e) {
-        currentPart.onClick(e);
+        if(currentPart!=null)
+            currentPart.onClick(e);
     }
     @Override
     public void mousePressed(MouseEvent e) {
@@ -196,10 +197,13 @@ public class JUIXApplication implements MouseListener, KeyListener, MouseMotionL
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if(currentPart!=null)
+            currentPart.keyTyped(e);
+
     }
     @Override
     public void keyReleased(KeyEvent e) {
-        currentPart.keyTyped(e);
+
     }
 
     @Override
@@ -208,6 +212,7 @@ public class JUIXApplication implements MouseListener, KeyListener, MouseMotionL
     }
     @Override
     public void mouseMoved(MouseEvent e) {
-        currentPart.mouseMove(e);
+        if(currentPart!=null)
+            currentPart.mouseMove(e);
     }
 }

@@ -2,11 +2,11 @@
 <layouts.PixelLayout>
     <Text
         id = "text1"
-        width="50px"
-        height="20px"
-        x="500px"
+        width="content"
+        height="content"
+        x="center"
         y="400px"
-        text="Title"
+        text="Very very veryyyy long Title, but even longeeeeeeeeeer"
     />
     <views.SquareView
         id="square0"
@@ -36,8 +36,8 @@
         id="square1"
         width="100px"
         height="100px"
-        x="center"
-        y="center"
+        x="center+100px"
+        y="center+100px"
     />
     <views.TextInputView
         id="input"
