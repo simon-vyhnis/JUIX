@@ -43,9 +43,6 @@ public class TextView extends View {
             if(textWidth != g.getFontMetrics().stringWidth(text))
                 textWidth = g.getFontMetrics().stringWidth(text);
                 notifyIfNeeded();
-            g.setColor(Color.red);
-            g.drawRect(getAbsoluteX(),getAbsoluteY(),getAbsoluteWidth(),getAbsoluteHeight());
-            System.out.println(getAbsoluteX()+" "+getAbsoluteY()+" "+getAbsoluteWidth()+" "+getAbsoluteHeight());
         }
         if(textHeight != g.getFontMetrics().getHeight())
             textHeight = g.getFontMetrics().getHeight();
