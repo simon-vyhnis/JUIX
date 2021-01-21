@@ -148,6 +148,7 @@ public abstract class View{
 
     protected void notifyIfNeeded(){
         if(getRawHeight().equals("content") || getRawWidth().equals("content")){
+            System.out.println(getClass().getName() + " notifying layout...");
             layout.notifyViewsChanged();
         }
     }

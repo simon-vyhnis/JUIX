@@ -20,6 +20,8 @@ public class ButtonView extends View {
     private Color textColor;
     private int textSize;
 
+    private int paddingTop, paddingBottom, paddingLeft, paddingRight;
+
     private int textWidth = 0, textHeight = 0;
 
 
@@ -29,10 +31,15 @@ public class ButtonView extends View {
         try {
             color = attributes.getColor("color", Color.orange);
             roundedCorners = attributes.getBooleanValue("roundedCorners",true);
-            textColor = attributes.getColor("textColor",Color.black);
+            textColor = attributes.getColor("textColor",Color.white);
             font = attributes.getStringValue("font","Arial");
             textSize = attributes.getIntValue("textSize",12);
             text = attributes.getStringValue("text", "BUTTON");
+
+            paddingTop = attributes.getIntValue("paddingTop",5);
+            paddingBottom = attributes.getIntValue("paddingBottom",5);
+            paddingRight = attributes.getIntValue("paddingRight",10);
+            paddingLeft = attributes.getIntValue("paddingLeft",10);
         } catch (InvalidAttributeException e) {
             e.printStackTrace();
         }
@@ -40,37 +47,37 @@ public class ButtonView extends View {
 
     @Override
     public void draw(Graphics g) {
+        g.setFont(new Font(font, Font.BOLD, textSize));
+
         if(textHeight != g.getFontMetrics().getHeight() || textWidth != g.getFontMetrics().stringWidth(text)){
             textHeight = g.getFontMetrics().getHeight();
             textWidth = g.getFontMetrics().stringWidth(text);
+            System.out.println("button: "+ textWidth +" "+ textHeight);
             notifyIfNeeded();
         }
 
         g.setColor(color);
-        g.fillRect(getAbsoluteX(),getAbsoluteY(),getAbsoluteWidth(),getAbsoluteHeight());
         if(roundedCorners){
             g.fillRoundRect(getAbsoluteX(),getAbsoluteY(),getAbsoluteWidth(),getAbsoluteHeight(),10,10);
         }else {
             g.fillRect(getAbsoluteX(),getAbsoluteY(),getContentWidth(),getAbsoluteHeight());
         }
-        g.setFont(new Font(font, Font.PLAIN, textSize));
-        while(g.getFontMetrics().getHeight() > getAbsoluteHeight()-4){
+        while(!getRawHeight().equals("content") && g.getFontMetrics().getHeight() > getAbsoluteHeight()-paddingTop-paddingBottom){
             textSize--;
             g.setFont(new Font(font, Font.PLAIN, textSize));
         }
 
         g.setColor(textColor);
-        g.drawString(text,getAbsoluteX()+10,getAbsoluteY()+((getAbsoluteHeight()-g.getFontMetrics().getHeight())/2)+g.getFontMetrics().getAscent());
-
+        g.drawString(text,getAbsoluteX()+paddingLeft,getAbsoluteY()+((getAbsoluteHeight()-g.getFontMetrics().getHeight())/2)+g.getFontMetrics().getAscent());
     }
 
     @Override
     public int getContentWidth() {
-        return textWidth+20;
+        return textWidth + paddingLeft + paddingRight;
     }
 
     @Override
     public int getContentHeight() {
-        return textHeight+4;
+        return textHeight + paddingTop + paddingBottom;
     }
 }

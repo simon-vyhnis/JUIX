@@ -36,17 +36,17 @@ public class TextView extends View {
 
     @Override
     public void draw(Graphics g) {
-        if (text!=null) {
-            g.setColor(textColor);
-            g.setFont(new Font(font,Font.PLAIN,textSize));
-            g.drawString(text, getAbsoluteX(), getAbsoluteY());
-            if(textWidth != g.getFontMetrics().stringWidth(text))
-                textWidth = g.getFontMetrics().stringWidth(text);
-                notifyIfNeeded();
-        }
-        if(textHeight != g.getFontMetrics().getHeight())
+        g.setFont(new Font(font,Font.PLAIN,textSize));
+        if(textWidth != g.getFontMetrics().stringWidth(text) || textHeight != g.getFontMetrics().getHeight()) {
+            textWidth = g.getFontMetrics().stringWidth(text);
             textHeight = g.getFontMetrics().getHeight();
+            System.out.println("Text view: " + textWidth + " " + textHeight);
+            System.out.println("Text view: " + g.getFontMetrics().stringWidth(text) + " " + g.getFontMetrics().getHeight());
             notifyIfNeeded();
+        }
+
+        g.setColor(textColor);
+        g.drawString(text, getAbsoluteX(), getAbsoluteY());
     }
 
     @Override
